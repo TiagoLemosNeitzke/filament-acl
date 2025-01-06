@@ -32,10 +32,8 @@ class FilamentAclCommand extends Command
             $this->generatePermissionsAndRoles($userId, $className);
 
             if (!class_exists("App\\Policies\\{$policyName}")) {
-                $stubPath = __DIR__ . '/../stubs/policy.stub';
-
+                $stubPath = base_path('vendor/tiagolemosneitzke/filamentacl/stubs/policy.stub');
                 $stubContent = file_get_contents($stubPath);
-
                 $stubContent = str_replace('{{policyName}}', $policyName, $stubContent);
                 $stubContent = str_replace('{{modelName}}', strtolower($className), $stubContent);
 
