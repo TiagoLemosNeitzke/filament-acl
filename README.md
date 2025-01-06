@@ -2,6 +2,11 @@
 
 A flexible and lightweight Access Control List (ACL) plugin for managing user permissions and roles in Laravel applications using Filament.
 
+## Attention
+This package doesn't work with Tenancy.
+
+---
+
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/tiagolemosneitzke/filamentacl.svg?style=flat-square)](https://packagist.org/packages/tiagolemosneitzke/filamentacl)
 [![GitHub Tests Action Status](https://img.shields.io/github/actions/workflow/status/TiagoLemosNeitzke/filamentacl/run-tests.yml?branch=main&label=tests&style=flat-square)](https://github.com/TiagoLemosNeitzke/filamentacl/actions?query=workflow%3Arun-tests+branch%3Amain)
 [![GitHub Code Style Action Status](https://img.shields.io/github/actions/workflow/status/TiagoLemosNeitzke/filamentacl/fix-php-code-styling.yml?branch=main&label=code%20style&style=flat-square)](https://github.com/TiagoLemosNeitzke/filamentacl/actions?query=workflow%3A"Fix+PHP+code+styling"+branch%3Amain)
@@ -12,7 +17,7 @@ A flexible and lightweight Access Control List (ACL) plugin for managing user pe
 You can install the package via composer:
 
 ```bash
-composer require tiagolemosneitzke/filamentacl -W --no-dev
+composer require tiagolemosneitzke/filamentacl -W
 ```
 
 This will install the Filament ACL package along with its dependencies, including `spatie/laravel-permission`.
@@ -58,7 +63,7 @@ This is the contents of the published config file:
 
 ```php
 return [
- 'permission' => [
+    'permission' => [
         'prefixes' => [
             'view',
             'view_any',
@@ -67,16 +72,11 @@ return [
             'restore',
             'delete',
             'force_delete'
-        ],
-        'labels' => [
-            'ver',
-            'ver tudo',
-            'criar',
-            'atualizar',
-            'restaurar',
-            'apagar',
-            'forçar apagar'
-        ],
+        ]
+    ],
+
+    'roles_prefixes' => [
+        'admin',
     ]
 ];
 ```
@@ -90,8 +90,38 @@ Or you can publish the necessary files one by one
 php artisan vendor:publish --tag=filament-acl-config
 php artisan vendor:publish --tag=filament-acl-stubs
 ```
-All the files need to be published to work correctly.
 
+You don't need to publish all the files for the package work, but you need to publish the settings file and configuring correctly the Laravel Permissions Package.
+
+In you `UserResource` file, you should add the below code to edit and view the permission of the user:
+
+```php
+use TiagoLemosNeitzke\FilamentAcl\Models\Role;
+
+public static function form(Form $form): Form
+    {
+        return $form
+            ->schema([
+                Forms\Components\Select::make('roles')
+                    ->label('Role')
+                    ->relationship('roles', 'name')
+                    ->options(Role::all()->pluck('name', 'id'))
+                    ->multiple()
+                    ->preload()
+                    ->searchable(),
+            ]);
+    }
+
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('roles.name')
+                    ->label('Is Admin?')
+                    ->badge(),
+             ]);
+    }
+```
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information on what has changed recently.
