@@ -1,11 +1,10 @@
 <?php
 
-namespace App\Filament\Resources;
+namespace TiagoLemosNeitzke\FilamentAcl\Resources;
 
-use App\Filament\Resources\RoleResource\Pages;
-use App\Filament\Resources\RoleResource\RelationManagers;
-use App\Models\Permission;
-use App\Models\Role;
+use TiagoLemosNeitzke\FilamentAcl\Models\Permission;
+use TiagoLemosNeitzke\FilamentAcl\Models\Role;
+use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Section;
@@ -94,12 +93,7 @@ class RoleResource extends Resource
             ]);
     }
 
-    public static function getRelations(): array
-    {
-        return [
-            //
-        ];
-    }
+
 
     public static function getPages(): array
     {

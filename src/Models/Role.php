@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace TiagoLemosNeitzke\FilamentAcl\Models;
 
 use Spatie\Permission\Models\Role as RoleAlias;
 
