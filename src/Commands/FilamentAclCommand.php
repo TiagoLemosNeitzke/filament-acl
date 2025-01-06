@@ -3,8 +3,8 @@
 namespace TiagoLemosNeitzke\FilamentAcl\Commands;
 
 use Illuminate\Console\Command;
-use App\Models\Permission;
-use App\Models\Role;
+use TiagoLemosNeitzke\FilamentAcl\Models\Permission;
+use TiagoLemosNeitzke\FilamentAcl\Models\Role;
 use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -34,7 +34,7 @@ class FilamentAclCommand extends Command
             $this->generatePermissionsAndRoles($userId, $className);
 
             if (!class_exists("App\\Policies\\{$policyName}")) {
-                $stubPath = base_path('stubs/filamentAcl/policy.stub');
+                $stubPath = base_path('vendor/tiagolemosneitzke/filamentacl/stubs/policy.stub');
 
                 $stubContent = file_get_contents($stubPath);
 
