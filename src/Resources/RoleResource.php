@@ -17,10 +17,9 @@ class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
     protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
-    protected static ?string $modelLabel = 'Regras de acesso';
-    protected static ?string $pluralModelLabel = 'Regras de acesso';
-    protected static ?string $navigationGroup = 'Configurações do sistema';
-    protected static ?string $slug = 'regras-de-acesso';
+    protected static ?string $modelLabel = 'Access rules';
+    protected static ?string $pluralModelLabel = 'Access rules';
+    protected static ?string $navigationGroup = 'System Settings';
 
     public static function form(Form $form): Form
     {
@@ -28,7 +27,7 @@ class RoleResource extends Resource
         $schema = [
 
             Forms\Components\TextInput::make('name')
-                ->label('Nome')
+                ->label('Name')
                 ->required()
                 ->maxLength(255),
         ];
@@ -78,7 +77,7 @@ class RoleResource extends Resource
                     ->searchable(),
 
                 Tables\Columns\TextColumn::make('created_at')
-                    ->label('Criado em')
+                    ->label('Created At')
                     ->dateTime()
                     ->sortable(),
             ])
