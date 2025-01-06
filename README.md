@@ -50,13 +50,6 @@ return [
 ];
 ```
 
-## Usage
-
-```php
-$filamentAcl = new TiagoLemosNeitzke/FilamentAcl\FilamentAcl();
-echo $filamentAcl->echoPhrase('Hello, TiagoLemosNeitzke/FilamentAcl!');
-```
-
 ## Testing
 
 ```bash
