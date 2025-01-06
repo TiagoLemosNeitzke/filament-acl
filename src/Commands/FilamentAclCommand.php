@@ -21,7 +21,7 @@ class FilamentAclCommand extends Command
         $userId = $this->selectUser();
 
         if (!$userId) {
-            $this->error('Usuário não encontrado!');
+            $this->error('User not found!');
             $this->selectUser();
         };
 
@@ -50,7 +50,7 @@ class FilamentAclCommand extends Command
                 $this->info("Policy {$policyName} already exists.");
             }
         }
-        $this->info("Papel 'admin' e permissões associadas diretamente ao usuário (ID: {$userId}).");
+        $this->info("'admin' role and permissions associated directly with the user (ID: {$userId}).");
     }
 
     protected function selectUser(): ?string
@@ -66,12 +66,12 @@ class FilamentAclCommand extends Command
 
         if (empty($user)) {
             $user = new User();
-            $result = $this->choice('Nenhum usuário encontrado. Deseja criar um?', ['Sim', 'Não'], 0);
+            $result = $this->choice('No users found. Do you want to create a?', ['Sim', 'Não'], 0);
 
             if ($result === 'Sim') {
-                $name = $this->ask('Digite o nome do usuário:');
-                $email = $this->ask('Digite o email do usuário:');
-                $password = $this->secret('Digite a senha do usuário:');
+                $name = $this->ask('Enter the username:');
+                $email = $this->ask('Enter the user email:');
+                $password = $this->secret('Enter the user password:');
 
                 $user->create([
                     'name' => $name,
@@ -79,14 +79,14 @@ class FilamentAclCommand extends Command
                     'password' => bcrypt($password),
                 ]);
 
-                $this->info("Usuário {$user->name} criado com sucesso!");
+                $this->info("User {$user->name} created successfully!");
             } else {
-                $this->error('Operação cancelada.');
+                $this->error('Operation canceled.');
                 return null;
             }
         }
 
-        $userId = $this->ask('Digite o ID do usuário que será o admin');
+        $userId = $this->ask('Enter the ID of the user who will be the admin');
 
         $user = User::find($userId);
         if (!$user) {
