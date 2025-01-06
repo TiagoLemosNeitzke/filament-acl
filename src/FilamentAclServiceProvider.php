@@ -2,23 +2,15 @@
 
 namespace TiagoLemosNeitzke\FilamentAcl;
 
-use Filament\Support\Assets\AlpineComponent;
-use Filament\Support\Assets\Asset;
-use Filament\Support\Assets\Css;
-use Filament\Support\Assets\Js;
-use Filament\Support\Facades\FilamentAsset;
-use Filament\Support\Facades\FilamentIcon;
 use Illuminate\Filesystem\Filesystem;
-use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
 use TiagoLemosNeitzke\FilamentAcl\Commands\FilamentAclCommand;
-use TiagoLemosNeitzke\FilamentAcl\Testing\TestsFilamentAcl;
 
 class FilamentAclServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'FilamentAcl';
+    public static string $name = 'filament-acl';
 
     public function configurePackage(Package $package): void
     {
@@ -28,15 +20,10 @@ class FilamentAclServiceProvider extends PackageServiceProvider
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
+                    ->publishAssets()
                     ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('TiagoLemosNeitzke/filament-acl');
             });
-
-        $configFileName = $package->shortName();
-
-        if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
-            $package->hasConfigFile();
-        }
     }
 
     public function packageRegistered(): void {
@@ -49,15 +36,29 @@ class FilamentAclServiceProvider extends PackageServiceProvider
 
     public function packageBooted(): void
     {
-
         // Handle Stubs
         if (app()->runningInConsole()) {
             foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
                 $this->publishes([
                     $file->getRealPath() => base_path("stubs/filamentAcl/{$file->getFilename()}"),
-                ], 'filamentacl-stubs');
+                ], 'filament-acl-stubs');
             }
         }
+
+        //handle config
+        $this->publishes([
+            __DIR__.'/../config/acl.php' => config_path('acl.php'),
+        ], 'filament-acl-config');
+
+        // Handle models
+        $this->publishes([
+            __DIR__.'/../Models' => app_path('Models'),
+        ], 'filament-acl-models');
+
+        // Handle resources
+        $this->publishes([
+            __DIR__.'/../Resources/' => app_path('Filament/Resources'),
+        ], 'filament-acl-resources');
     }
 
     protected function getAssetPackageName(): ?string
