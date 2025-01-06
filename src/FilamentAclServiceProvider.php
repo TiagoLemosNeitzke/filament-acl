@@ -20,8 +20,6 @@ class FilamentAclServiceProvider extends PackageServiceProvider
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
-                    ->publishAssets()
-                    ->askToRunMigrations()
                     ->askToStarRepoOnGitHub('TiagoLemosNeitzke/filament-acl');
             });
     }
@@ -49,16 +47,6 @@ class FilamentAclServiceProvider extends PackageServiceProvider
         $this->publishes([
             __DIR__.'/../config/acl.php' => config_path('acl.php'),
         ], 'filament-acl-config');
-
-        // Handle models
-        $this->publishes([
-            __DIR__.'/../Models' => app_path('Models'),
-        ], 'filament-acl-models');
-
-        // Handle resources
-        $this->publishes([
-            __DIR__.'/../Resources/' => app_path('Filament/Resources'),
-        ], 'filament-acl-resources');
     }
 
     protected function getAssetPackageName(): ?string
