@@ -1,6 +1,6 @@
 <?php
 
-namespace TiagoLemosNeitzke/FilamentAcl\FilamentAcl;
+namespace TiagoLemosNeitzke\FilamentAcl;
 
 use Filament\Contracts\Plugin;
 use Filament\Panel;
@@ -9,12 +9,14 @@ class FilamentAclPlugin implements Plugin
 {
     public function getId(): string
     {
-        return 'filamentacl';
+        return 'filament-acl';
     }
 
     public function register(Panel $panel): void
     {
-        //
+        $panel->resources([
+            Resources\RoleResource::class,
+        ]);
     }
 
     public function boot(Panel $panel): void
