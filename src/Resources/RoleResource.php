@@ -39,7 +39,7 @@ class RoleResource extends Resource
                 ->schema([
                     CheckboxList::make('permissions')
                         ->label('')
-                        ->relationship('permissions', 'label')
+                        ->relationship('permissions', 'name')
                         ->options($permissions)
                         ->columns(4)
                         ->bulkToggleable(),

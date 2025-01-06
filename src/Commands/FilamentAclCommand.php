@@ -101,20 +101,16 @@ class FilamentAclCommand extends Command
     protected function generatePermissionsAndRoles($userId, string $className): void
     {
         $prefixes = config('acl.permission.prefixes');
-        $labels = config('acl.permission.labels');
 
         foreach ($prefixes as $index => $prefix) {
-            $label = $labels[$index];
             Permission::query()->updateOrCreate([
                 'name' => strtolower($className).'_'.$prefix,
-                'label' => $label
             ]);
         }
 
         foreach (config('acl.roles_prefixes') as $role) {
             $role = Role::updateOrCreate([
                 'name' => $role,
-                'label' => $role,
             ]);
         }
 
