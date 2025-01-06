@@ -45,13 +45,27 @@ class User extends Authenticatable
 }
 ```
 
+Register the plugin in your Panel provider:
+
+```php
+use TiagoLemosNeitzke\FilamentAcl\FilamentAclPlugin;
+ 
+public function panel(Panel $panel): Panel
+{
+    return $panel
+        ->plugins([
+             FilamentAclPlugin::make()
+        ]);
+}
+```
+
 You can then install the Filament ACL package with the following command:
 
 ```bash
 php artisan filament-acl:install
 ```
 
-This will publish the settings, add the plugin to your Filament Panel, and create the files for `RoleResource`.
+This will publish the config file.
 
 Alternatively, you can publish only the config file with:
 
@@ -93,7 +107,7 @@ php artisan vendor:publish --tag=filament-acl-stubs
 
 You don't need to publish all the files for the package work, but you need to publish the settings file and configuring correctly the Laravel Permissions Package.
 
-In you `UserResource` file, you should add the below code to edit and view the permission of the user:
+In your `UserResource` file, you should add the below code to edit and view the permission of the user:
 
 ```php
 use TiagoLemosNeitzke\FilamentAcl\Models\Role;
