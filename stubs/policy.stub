@@ -1,0 +1,89 @@
+<?php declare(strict_types = 1);
+
+namespace App\Policies;
+
+use App\Models\User;
+use Illuminate\Auth\Access\HandlesAuthorization;
+
+class {{policyName}}
+{
+    use HandlesAuthorization;
+
+    public function viewAny(User $user): bool
+    {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasPermissionTo('{{modelName}}_view_any')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function view(User $user): bool
+    {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasPermissionTo('{{modelName}}_view')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function create(User $user): bool
+    {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasPermissionTo('{{modelName}}_create')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function update(User $user): bool
+    {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasPermissionTo('{{modelName}}_update')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function delete(User $user): bool
+    {
+        if ($user->hasRole('admin')) {
+            return true;
+        }
+
+        if ($user->hasPermissionTo('{{modelName}}_delete')) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public function forceDelete(User $user): bool
+    {
+       if ($user->hasRole('admin')) {
+            return true;
+       }
+
+       if ($user->hasPermissionTo('{{modelName}}_force_delete')) {
+           return true;
+       }
+
+       return false;
+    }
+}
