@@ -2,28 +2,29 @@
 
 namespace TiagoLemosNeitzke\FilamentAcl\Commands;
 
-use Illuminate\Console\Command;
-use TiagoLemosNeitzke\FilamentAcl\Models\Permission;
-use TiagoLemosNeitzke\FilamentAcl\Models\Role;
 use App\Models\User;
+use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
+use TiagoLemosNeitzke\FilamentAcl\Models\Permission;
+use TiagoLemosNeitzke\FilamentAcl\Models\Role;
 
 class FilamentAclCommand extends Command
 {
     protected $signature = 'acl:install';
 
     protected $description = 'Install acl roles and permissions';
+
     public function handle(): void
     {
         $path = app_path('Models/');
         $files = File::allFiles($path);
         $userId = $this->selectUser();
 
-        if (!$userId) {
+        if (! $userId) {
             $this->error('User not found!');
             $this->selectUser();
-        };
+        }
 
         foreach ($files as $file) {
             $className = $file->getFilenameWithoutExtension();
@@ -31,7 +32,7 @@ class FilamentAclCommand extends Command
 
             $this->generatePermissionsAndRoles($userId, $className);
 
-            if (!class_exists("App\\Policies\\{$policyName}")) {
+            if (! class_exists("App\\Policies\\{$policyName}")) {
                 $stubPath = base_path('vendor/tiagolemosneitzke/filamentacl/stubs/policy.stub');
                 $stubContent = file_get_contents($stubPath);
                 $stubContent = str_replace('{{policyName}}', $policyName, $stubContent);
@@ -39,7 +40,7 @@ class FilamentAclCommand extends Command
 
                 $policyPath = app_path("Policies/{$policyName}.php");
 
-                if (!File::exists(app_path('Policies'))) {
+                if (! File::exists(app_path('Policies'))) {
                     File::makeDirectory(app_path('Policies'), 0755, true);
                 }
 
@@ -57,7 +58,7 @@ class FilamentAclCommand extends Command
     {
         $this->table(
             ['ID', 'Name', 'Email'],
-            $user = User::all(['id', 'name', 'email'])->map(fn($user) => [
+            $user = User::all(['id', 'name', 'email'])->map(fn ($user) => [
                 'ID' => $user->id,
                 'Name' => $user->name,
                 'Email' => $user->email,
@@ -65,7 +66,7 @@ class FilamentAclCommand extends Command
         );
 
         if (empty($user)) {
-            $user = new User();
+            $user = new User;
             $result = $this->choice('No users found. Do you want to create a?', ['Sim', 'Não'], 0);
 
             if ($result === 'Sim') {
@@ -82,6 +83,7 @@ class FilamentAclCommand extends Command
                 $this->info("User {$user->name} created successfully!");
             } else {
                 $this->error('Operation canceled.');
+
                 return null;
             }
         }
@@ -89,7 +91,7 @@ class FilamentAclCommand extends Command
         $userId = $this->ask('Enter the ID of the user who will be the admin');
 
         $user = User::find($userId);
-        if (!$user) {
+        if (! $user) {
             return null;
         }
 

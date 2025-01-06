@@ -2,9 +2,9 @@
 
 namespace TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource\Pages;
 
-use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
+use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource;
 
 class ListRoles extends ListRecords
 {

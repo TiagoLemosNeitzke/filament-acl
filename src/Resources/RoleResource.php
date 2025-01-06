@@ -2,9 +2,6 @@
 
 namespace TiagoLemosNeitzke\FilamentAcl\Resources;
 
-use TiagoLemosNeitzke\FilamentAcl\Models\Permission;
-use TiagoLemosNeitzke\FilamentAcl\Models\Role;
-use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource\Pages;
 use Filament\Forms;
 use Filament\Forms\Components\CheckboxList;
 use Filament\Forms\Components\Section;
@@ -12,13 +9,20 @@ use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
+use TiagoLemosNeitzke\FilamentAcl\Models\Permission;
+use TiagoLemosNeitzke\FilamentAcl\Models\Role;
+use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource\Pages;
 
 class RoleResource extends Resource
 {
     protected static ?string $model = Role::class;
+
     protected static ?string $navigationIcon = 'heroicon-o-lock-closed';
+
     protected static ?string $modelLabel = 'Access rules';
+
     protected static ?string $pluralModelLabel = 'Access rules';
+
     protected static ?string $navigationGroup = 'System Settings';
 
     public static function form(Form $form): Form
@@ -53,6 +57,7 @@ class RoleResource extends Resource
         $permissions = Permission::all()->groupBy(function ($permission) {
             $parts = explode('_', $permission->name);
             $model = $parts[0];
+
             return $model;
         });
 
@@ -91,8 +96,6 @@ class RoleResource extends Resource
                 //
             ]);
     }
-
-
 
     public static function getPages(): array
     {

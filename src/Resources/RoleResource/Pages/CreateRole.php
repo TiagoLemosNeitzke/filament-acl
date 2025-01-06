@@ -2,8 +2,8 @@
 
 namespace TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource\Pages;
 
-use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource;
 use Filament\Resources\Pages\CreateRecord;
+use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource;
 
 class CreateRole extends CreateRecord
 {
@@ -12,7 +12,7 @@ class CreateRole extends CreateRecord
     protected function mutateFormDataBeforeCreate(array $data): array
     {
         $data['label'] = $data['name'];
+
         return parent::mutateFormDataBeforeCreate($data);
     }
-
 }

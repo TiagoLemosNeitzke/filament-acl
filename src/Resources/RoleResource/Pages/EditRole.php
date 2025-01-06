@@ -2,9 +2,9 @@
 
 namespace TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource\Pages;
 
-use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
+use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource;
 
 class EditRole extends EditRecord
 {
