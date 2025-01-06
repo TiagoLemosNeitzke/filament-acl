@@ -65,10 +65,7 @@
         "laravel": {
             "providers": [
                 "TiagoLemosNeitzke\\FilamentAcl\\FilamentAclServiceProvider"
-            ],
-            "aliases": {
-                "FilamentAcl": "TiagoLemosNeitzke\\FilamentAcl\\Facades\\FilamentAcl"
-            }
+            ]
         }
     },
     "minimum-stability": "dev",
