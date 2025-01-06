@@ -16,8 +16,6 @@ class FilamentAclCommand extends Command
     protected $description = 'Install acl roles and permissions';
     public function handle(): void
     {
-        $this->info('Tenha certeza de já ter instalado e rodado as migrações do pacote laravel permissions.');
-        $this->info('Iniciando a instalação das permissões e papéis...');
         $path = app_path('Models/');
         $files = File::allFiles($path);
         $userId = $this->selectUser();
@@ -29,12 +27,12 @@ class FilamentAclCommand extends Command
 
         foreach ($files as $file) {
             $className = $file->getFilenameWithoutExtension();
-            $policyName = $className . 'Policy';
+            $policyName = $className.'Policy';
 
             $this->generatePermissionsAndRoles($userId, $className);
 
             if (!class_exists("App\\Policies\\{$policyName}")) {
-                $stubPath = base_path('vendor/tiagolemosneitzke/filamentacl/stubs/policy.stub');
+                $stubPath = __DIR__ . '/../stubs/policy.stub';
 
                 $stubContent = file_get_contents($stubPath);
 
@@ -74,10 +72,10 @@ class FilamentAclCommand extends Command
 
             if ($result === 'Sim') {
                 $name = $this->ask('Digite o nome do usuário:');
-                $email = $this->ask('Digite o e-mail do usuário:');
+                $email = $this->ask('Digite o email do usuário:');
                 $password = $this->secret('Digite a senha do usuário:');
 
-                $user = $user->create([
+                $user->create([
                     'name' => $name,
                     'email' => $email,
                     'password' => bcrypt($password),
@@ -90,7 +88,14 @@ class FilamentAclCommand extends Command
             }
         }
 
-        return $user->id;
+        $userId = $this->ask('Digite o ID do usuário que será o admin');
+
+        $user = User::find($userId);
+        if (!$user) {
+            return null;
+        }
+
+        return $userId;
     }
 
     protected function generatePermissionsAndRoles($userId, string $className): void
@@ -101,7 +106,7 @@ class FilamentAclCommand extends Command
         foreach ($prefixes as $index => $prefix) {
             $label = $labels[$index];
             Permission::query()->updateOrCreate([
-                'name' => strtolower($className) . '_' . $prefix,
+                'name' => strtolower($className).'_'.$prefix,
                 'label' => $label
             ]);
         }
