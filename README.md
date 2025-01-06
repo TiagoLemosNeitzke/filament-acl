@@ -14,32 +14,39 @@ This is where your description should go. Limit it to a paragraph or two. Consid
 You can install the package via composer:
 
 ```bash
-composer require tiagolemosneitzke-filament-acl/filamentacl
-```
-
-You can publish and run the migrations with:
-
-```bash
-php artisan vendor:publish --tag="filamentacl-migrations"
-php artisan migrate
+composer require TiagoLemosNeitzke/filamentacl
 ```
 
 You can publish the config file with:
 
 ```bash
-php artisan vendor:publish --tag="filamentacl-config"
-```
-
-Optionally, you can publish the views using
-
-```bash
-php artisan vendor:publish --tag="filamentacl-views"
+php artisan vendor:publish --tag="acl"
 ```
 
 This is the contents of the published config file:
 
 ```php
 return [
+ 'permission' => [
+        'prefixes' => [
+            'view',
+            'view_any',
+            'create',
+            'update',
+            'restore',
+            'delete',
+            'force_delete'
+        ],
+        'labels' => [
+            'ver',
+            'ver tudo',
+            'criar',
+            'atualizar',
+            'restaurar',
+            'apagar',
+            'forçar apagar'
+        ],
+
 ];
 ```
 
