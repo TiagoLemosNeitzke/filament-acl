@@ -88,8 +88,6 @@ php artisan vendor:publish --provider="TiagoLemosNeitzke\FilamentAcl\FilamentAcl
 Or you can publish the necessary files one by one
 ```bash
 php artisan vendor:publish --tag=filament-acl-config
-php artisan vendor:publish --tag=filament-acl-models
-php artisan vendor:publish --tag=filament-acl-resources
 php artisan vendor:publish --tag=filament-acl-stubs
 ```
 All the files need to be published to work correctly.
