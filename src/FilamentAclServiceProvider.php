@@ -1,6 +1,6 @@
 <?php
 
-namespace TiagoLemosNeitzke/FilamentAcl\FilamentAcl;
+namespace TiagoLemosNeitzke\FilamentAcl;
 
 use Filament\Support\Assets\AlpineComponent;
 use Filament\Support\Assets\Asset;
@@ -13,30 +13,23 @@ use Livewire\Features\SupportTesting\Testable;
 use Spatie\LaravelPackageTools\Commands\InstallCommand;
 use Spatie\LaravelPackageTools\Package;
 use Spatie\LaravelPackageTools\PackageServiceProvider;
-use TiagoLemosNeitzke/FilamentAcl\FilamentAcl\Commands\FilamentAclCommand;
-use TiagoLemosNeitzke/FilamentAcl\FilamentAcl\Testing\TestsFilamentAcl;
+use TiagoLemosNeitzke\FilamentAcl\Commands\FilamentAclCommand;
+use TiagoLemosNeitzke\FilamentAcl\Testing\TestsFilamentAcl;
 
 class FilamentAclServiceProvider extends PackageServiceProvider
 {
-    public static string $name = 'filamentacl';
-
-    public static string $viewNamespace = 'filamentacl';
+    public static string $name = 'FilamentAcl';
 
     public function configurePackage(Package $package): void
     {
-        /*
-         * This class is a Package Service Provider
-         *
-         * More info: https://github.com/spatie/laravel-package-tools
-         */
         $package->name(static::$name)
             ->hasCommands($this->getCommands())
+            ->hasConfigFile(['acl'])
             ->hasInstallCommand(function (InstallCommand $command) {
                 $command
                     ->publishConfigFile()
-                    ->publishMigrations()
                     ->askToRunMigrations()
-                    ->askToStarRepoOnGitHub('tiagolemosneitzke-filament-acl/filamentacl');
+                    ->askToStarRepoOnGitHub('TiagoLemosNeitzke/filament-acl');
             });
 
         $configFileName = $package->shortName();
@@ -44,66 +37,32 @@ class FilamentAclServiceProvider extends PackageServiceProvider
         if (file_exists($package->basePath("/../config/{$configFileName}.php"))) {
             $package->hasConfigFile();
         }
-
-        if (file_exists($package->basePath('/../database/migrations'))) {
-            $package->hasMigrations($this->getMigrations());
-        }
-
-        if (file_exists($package->basePath('/../resources/lang'))) {
-            $package->hasTranslations();
-        }
-
-        if (file_exists($package->basePath('/../resources/views'))) {
-            $package->hasViews(static::$viewNamespace);
-        }
     }
 
-    public function packageRegistered(): void {}
+    public function packageRegistered(): void {
+        parent::packageRegistered();
+
+        $this->app->scoped('filament-acl', function (): FilamentAcl {
+            return new FilamentAcl;
+        });
+    }
 
     public function packageBooted(): void
     {
-        // Asset Registration
-        FilamentAsset::register(
-            $this->getAssets(),
-            $this->getAssetPackageName()
-        );
-
-        FilamentAsset::registerScriptData(
-            $this->getScriptData(),
-            $this->getAssetPackageName()
-        );
-
-        // Icon Registration
-        FilamentIcon::register($this->getIcons());
 
         // Handle Stubs
         if (app()->runningInConsole()) {
             foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
                 $this->publishes([
-                    $file->getRealPath() => base_path("stubs/filamentacl/{$file->getFilename()}"),
+                    $file->getRealPath() => base_path("stubs/filamentAcl/{$file->getFilename()}"),
                 ], 'filamentacl-stubs');
             }
         }
-
-        // Testing
-        Testable::mixin(new TestsFilamentAcl);
     }
 
     protected function getAssetPackageName(): ?string
     {
-        return 'tiagolemosneitzke-filament-acl/filamentacl';
-    }
-
-    /**
-     * @return array<Asset>
-     */
-    protected function getAssets(): array
-    {
-        return [
-            // AlpineComponent::make('filamentacl', __DIR__ . '/../resources/dist/components/filamentacl.js'),
-            Css::make('filamentacl-styles', __DIR__ . '/../resources/dist/filamentacl.css'),
-            Js::make('filamentacl-scripts', __DIR__ . '/../resources/dist/filamentacl.js'),
-        ];
+        return 'TiagoLemosNeitzke/FilamentAcl';
     }
 
     /**
@@ -113,40 +72,6 @@ class FilamentAclServiceProvider extends PackageServiceProvider
     {
         return [
             FilamentAclCommand::class,
-        ];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getIcons(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getRoutes(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string, mixed>
-     */
-    protected function getScriptData(): array
-    {
-        return [];
-    }
-
-    /**
-     * @return array<string>
-     */
-    protected function getMigrations(): array
-    {
-        return [
-            'create_filamentacl_table',
         ];
     }
 }
