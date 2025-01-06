@@ -1,5 +1,5 @@
 {
-    "name": "tiagolemosneitzke-filament-acl/filamentacl",
+    "name": "tiagolemosneitzke/filamentacl",
     "description": "A flexible and lightweight Access Control List (ACL) plugin for managing user permissions and roles in Laravel applications",
     "keywords": [
         "TiagoLemosNeitzke/filament-acl",
@@ -20,9 +20,10 @@
         }
     ],
     "require": {
-        "php": "^8.1",
+        "php": "^8.2",
         "filament/filament": "^3.0",
-        "spatie/laravel-package-tools": "^1.15.0"
+        "spatie/laravel-package-tools": "^1.15.0",
+        "spatie/laravel-permission": "^6.9"
     },
     "require-dev": {
         "laravel/pint": "^1.0",
@@ -38,13 +39,12 @@
     },
     "autoload": {
         "psr-4": {
-            "TiagoLemosNeitzke/FilamentAcl\\FilamentAcl\\": "src/",
-            "TiagoLemosNeitzke/FilamentAcl\\FilamentAcl\\Database\\Factories\\": "database/factories/"
+            "TiagoLemosNeitzke\\FilamentAcl\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "TiagoLemosNeitzke/FilamentAcl\\FilamentAcl\\Tests\\": "tests/"
+            "TiagoLemosNeitzke\\FilamentAcl\\Tests\\": "tests/"
         }
     },
     "scripts": {
@@ -64,10 +64,10 @@
     "extra": {
         "laravel": {
             "providers": [
-                "TiagoLemosNeitzke/FilamentAcl\\FilamentAcl\\FilamentAclServiceProvider"
+                "TiagoLemosNeitzke\\FilamentAcl\\FilamentAclServiceProvider"
             ],
             "aliases": {
-                "FilamentAcl": "TiagoLemosNeitzke/FilamentAcl\\FilamentAcl\\Facades\\FilamentAcl"
+                "FilamentAcl": "TiagoLemosNeitzke\\FilamentAcl\\Facades\\FilamentAcl"
             }
         }
     },
