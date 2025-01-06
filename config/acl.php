@@ -9,11 +9,11 @@ return [
             'update',
             'restore',
             'delete',
-            'force_delete'
+            'force_delete',
         ],
     ],
 
     'roles_prefixes' => [
         'admin',
-    ]
+    ],
 ];

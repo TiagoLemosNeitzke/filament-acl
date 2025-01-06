@@ -28,7 +28,7 @@ class FilamentAclCommand extends Command
 
         foreach ($files as $file) {
             $className = $file->getFilenameWithoutExtension();
-            $policyName = $className.'Policy';
+            $policyName = $className . 'Policy';
 
             $this->generatePermissionsAndRoles($userId, $className);
 
@@ -104,7 +104,7 @@ class FilamentAclCommand extends Command
 
         foreach ($prefixes as $index => $prefix) {
             Permission::query()->updateOrCreate([
-                'name' => strtolower($className).'_'.$prefix,
+                'name' => strtolower($className) . '_' . $prefix,
             ]);
         }
 

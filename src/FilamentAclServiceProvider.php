@@ -37,7 +37,7 @@ class FilamentAclServiceProvider extends PackageServiceProvider
     {
         // Handle Stubs
         if (app()->runningInConsole()) {
-            foreach (app(Filesystem::class)->files(__DIR__.'/../stubs/') as $file) {
+            foreach (app(Filesystem::class)->files(__DIR__ . '/../stubs/') as $file) {
                 $this->publishes([
                     $file->getRealPath() => base_path("stubs/filamentAcl/{$file->getFilename()}"),
                 ], 'filament-acl-stubs');
@@ -46,7 +46,7 @@ class FilamentAclServiceProvider extends PackageServiceProvider
 
         // handle config
         $this->publishes([
-            __DIR__.'/../config/acl.php' => config_path('acl.php'),
+            __DIR__ . '/../config/acl.php' => config_path('acl.php'),
         ], 'filament-acl-config');
     }
 
