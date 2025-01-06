@@ -60,7 +60,7 @@ class RoleResource extends Resource
         $groupedPermissions = [];
 
         foreach ($permissions as $model => $perms) {
-            $groupedPermissions[$model] = $perms->pluck('label', 'id')->toArray();
+            $groupedPermissions[$model] = $perms->pluck('name', 'id')->toArray();
         }
 
         return $groupedPermissions;
@@ -71,8 +71,8 @@ class RoleResource extends Resource
         return $table
             ->columns([
 
-                Tables\Columns\TextColumn::make('label')
-                    ->label('Label')
+                Tables\Columns\TextColumn::make('name')
+                    ->label('Role')
                     ->badge()
                     ->color('success')
                     ->searchable(),
