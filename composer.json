@@ -2,9 +2,13 @@
     "name": "tiagolemosneitzke/filamentacl",
     "description": "A flexible and lightweight Access Control List (ACL) plugin for managing user permissions and roles in Laravel applications",
     "keywords": [
-        "TiagoLemosNeitzke/filament-acl",
+        "TiagoLemosNeitzke",
         "laravel",
-        "filamentacl"
+        "filament",
+        "filamentacl",
+        "acl",
+        "permissions",
+        "roles"
     ],
     "homepage": "https://github.com/tiagolemosneitzke-filament-acl/filamentacl",
     "support": {
