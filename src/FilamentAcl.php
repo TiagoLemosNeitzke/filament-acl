@@ -1,5 +1,11 @@
 <?php
 
-namespace TiagoLemosNeitzke/FilamentAcl\FilamentAcl;
+namespace TiagoLemosNeitzke\FilamentAcl;
 
-class FilamentAcl {}
+use Illuminate\Support\Facades\Facade;
+
+class FilamentAcl extends Facade {
+    protected static function getFacadeAccessor() {
+        return 'filament-acl';
+    }
+}
