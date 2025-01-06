@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Filament\Resources\RoleResource\Pages;
+namespace TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource\Pages;
 
-use App\Filament\Resources\RoleResource;
+use TiagoLemosNeitzke\FilamentAcl\Resources\RoleResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
