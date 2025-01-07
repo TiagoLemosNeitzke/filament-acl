@@ -62,6 +62,7 @@ class FilamentAclCommand extends Command
             if ($user->hasRole('admin')) {
                 $admin = $user->id;
             }
+
             return null;
         });
 
@@ -118,7 +119,7 @@ class FilamentAclCommand extends Command
     {
         $this->table(
             ['ID', 'Name', 'Email'],
-            $user = User::all(['id', 'name', 'email'])->map(fn($user) => [
+            $user = User::all(['id', 'name', 'email'])->map(fn ($user) => [
                 'ID' => $user->id,
                 'Name' => $user->name,
                 'Email' => $user->email,
@@ -126,7 +127,7 @@ class FilamentAclCommand extends Command
         );
 
         if (empty($user)) {
-            $user = new User();
+            $user = new User;
             $result = $this->choice('No users found. Do you want to create?', ['Sim', 'Não'], 0);
 
             if ($result === 'Sim') {
@@ -143,6 +144,7 @@ class FilamentAclCommand extends Command
                 $this->info("User {$user->name} created successfully!");
             } else {
                 $this->error('Operation canceled.');
+
                 return 0;
             }
 
@@ -152,7 +154,7 @@ class FilamentAclCommand extends Command
         $userId = $this->ask('Enter the ID of the user who will be the admin');
 
         $user = User::find($userId);
-        if (!$user) {
+        if (! $user) {
             return null;
         }
 
