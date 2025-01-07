@@ -54,48 +54,22 @@ class FilamentAclCommand extends Command
         $this->info("'admin' role and permissions associated directly with the user (ID: {$userId}).");
     }
 
-    protected function selectUser(): ?string
+    protected function selectUser(): ?int
     {
-        $this->table(
-            ['ID', 'Name', 'Email'],
-            $user = User::all(['id', 'name', 'email'])->map(fn ($user) => [
-                'ID' => $user->id,
-                'Name' => $user->name,
-                'Email' => $user->email,
-            ])->toArray()
-        );
-
-        if (empty($user)) {
-            $user = new User;
-            $result = $this->choice('No users found. Do you want to create a?', ['Sim', 'Não'], 0);
-
-            if ($result === 'Sim') {
-                $name = $this->ask('Enter the username:');
-                $email = $this->ask('Enter the user email:');
-                $password = $this->secret('Enter the user password:');
-
-                $user->create([
-                    'name' => $name,
-                    'email' => $email,
-                    'password' => bcrypt($password),
-                ]);
-
-                $this->info("User {$user->name} created successfully!");
-            } else {
-                $this->error('Operation canceled.');
-
-                return null;
+        $users = User::get();
+        $admin = null;
+        $users->each(function (User $user) use (&$admin) {
+            if ($user->hasRole('admin')) {
+                $admin = $user->id;
             }
-        }
-
-        $userId = $this->ask('Enter the ID of the user who will be the admin');
-
-        $user = User::find($userId);
-        if (! $user) {
             return null;
+        });
+
+        if ($admin) {
+            return $admin;
         }
 
-        return $userId;
+        return $this->createUser();
     }
 
     protected function generatePermissionsAndRoles($userId, string $className): void
@@ -121,7 +95,7 @@ class FilamentAclCommand extends Command
         $this->assignPermissionsToRolesOrUsers($userId, $role, $permissions);
     }
 
-    protected function assignPermissionsToRolesOrUsers(string $userId, $role, $permissions): void
+    protected function assignPermissionsToRolesOrUsers(int $userId, $role, $permissions): void
     {
         // Atribui o papel 'admin' ao usuário
         DB::table('model_has_roles')->updateOrInsert([
@@ -138,5 +112,50 @@ class FilamentAclCommand extends Command
                 'model_id' => $userId,
             ]);
         }
+    }
+
+    private function createUser(): ?int
+    {
+        $this->table(
+            ['ID', 'Name', 'Email'],
+            $user = User::all(['id', 'name', 'email'])->map(fn($user) => [
+                'ID' => $user->id,
+                'Name' => $user->name,
+                'Email' => $user->email,
+            ])->toArray()
+        );
+
+        if (empty($user)) {
+            $user = new User();
+            $result = $this->choice('No users found. Do you want to create?', ['Sim', 'Não'], 0);
+
+            if ($result === 'Sim') {
+                $name = $this->ask('Enter the username:');
+                $email = $this->ask('Enter the user email:');
+                $password = $this->secret('Enter the user password:');
+
+                $user = $user->create([
+                    'name' => $name,
+                    'email' => $email,
+                    'password' => bcrypt($password),
+                ]);
+
+                $this->info("User {$user->name} created successfully!");
+            } else {
+                $this->error('Operation canceled.');
+                return 0;
+            }
+
+            return $user->id;
+        }
+
+        $userId = $this->ask('Enter the ID of the user who will be the admin');
+
+        $user = User::find($userId);
+        if (!$user) {
+            return null;
+        }
+
+        return (int) $userId;
     }
 }
